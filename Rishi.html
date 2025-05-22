@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rishi Kartheek Reddy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #fefefe;
+      color: #333;
+      cursor: auto;
+    }
+
+    nav {
+      background: linear-gradient(90deg, #3a8dde, #8e44ad);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    nav .logo {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      user-select: none;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    nav ul li a::after {
+      content: '';
+      width: 0;
+      height: 2px;
+      background: #ffeb3b;
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffeb3b;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    header.home {
+      background: url('/Users/akkaloorisaikeerthana/Documents/i2.jpeg') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      color: white;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      max-width: 90%;
+    }
+
+    .typing-text {
+      font-size: 3.2rem;
+      font-weight: 700;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #3a8dde, #8e44ad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 0.15em solid #ffeb3b;
+      width: 0;
+      animation: typing 3s steps(25) forwards, blink-caret 0.75s step-end infinite;
+      margin-bottom: 1rem;
+    }
+
+    .subtext {
+      font-size: 1.3rem;
+      color: #ffeb3b;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+
+    .subtext.visible {
+      opacity: 1;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 22ch; }
+    }
+
+    @keyframes blink-caret {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #ffeb3b; }
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    section:nth-of-type(2) { animation-delay: 0.3s; }
+    section:nth-of-type(3) { animation-delay: 0.6s; }
+    section:nth-of-type(4) { animation-delay: 0.9s; }
+
+    section h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      background: linear-gradient(to right, #3a8dde, #8e44ad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    section p {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .about-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .about-section img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .about-section div {
+      max-width: 600px;
+    }
+
+    /* Photo Grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+      width: 100%;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .photo-grid img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(58, 141, 222, 0.6);
+    }
+
+    footer {
+      background: #3a8dde;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.1rem;
+      margin-top: 3rem;
+      animation: fadeUp 1.2s ease forwards;
+    }
+
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .lightbox-modal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      object-fit: contain;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: white;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 2001;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Rishi's World</div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#photos">Photos</a></li>
+      <li><a href="#photography">Photography</a></li>
+    </ul>
+  </nav>
+
+  <header class="home" id="home">
+    <div class="overlay">
+      <div class="typing-text" id="typingText">Welcome to Rishi's World</div>
+      <div class="subtext" id="subText">Explore the navigation bar to know more about Rishi</div>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>About Rishi</h2>
+    <div class="about-section">
+      <img src="/Users/akkaloorisaikeerthana/Documents/i3.jpeg" alt="Rishi Profile" />
+      <div>
+        <p>Rishi is a 22-year-old MBBS student studying in Bishkek . He loves taking photos 📸 and loves his family a lot, especially his mom . He’s a real momma’s boy! ❤️ He can be a little naughty sometimes and used to get scolded for doing silly things 😅, but deep down, he is a very kind and good-hearted boy .
+
+        Rishi is super caring 🤗 and a really good friend. He always looks out for the people around him . Even though he only sleeps for about 6 hours a day , he’s always full of energy and ready to do things. He works very hard 🙌 and is serious about becoming a doctor. And there’s no doubt—he will become one very soon! 👨‍⚕️✨</p>
+      </div>
+    </div>
+    <br>
+    <h2>About Me</h2>
+    <div class="about-section">
+      <img src="/Users/akkaloorisaikeerthana/Documents/me1.jpeg" alt="Your Profile" />
+      <div>
+       <p>Hi! I'm the one who made this website 😇. I’m learning how to build websites, and I made this as a small gift for Rishi. I’ll keep making it better as I learn more.
+
+        You don’t need to know too much about me — because this page is all about Rishi 😌.
+        
+        But okay, just a little about me😼.
+        I like sleeping a lot,eating junk, building websites, annoying my friends (just for fun!), playing the piano when I’m alone 🎹(City of stars!), and watching sad movies.
+        And yes, I’m a close friend of Rishi 💜.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="photos">
+    <h2>This is Rishi,a cutie pie</h2>
+    <div class="photo-grid">
+      <img src="/Users/akkaloorisaikeerthana/Documents/i1.jpeg" alt="Rishi 1" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/i3.jpeg" alt="Rishi 2" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/i4.jpeg" alt="Rishi 3" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/i5.jpeg" alt="Rishi 4" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/i6.jpeg" alt="Rishi 5" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/i7.jpeg" alt="Rishi 6" onclick="openLightbox(this.src)" />
+    </div>
+  </section>
+
+  <section id="photography">
+    <h2>Lovely Photos Snapped by Rishi</h2>
+    <h2>Damn, look at these photos!</h2>
+    <div class="photo-grid">
+      <img src="/Users/akkaloorisaikeerthana/Documents/j1.jpeg" alt="Photo by Rishi 1" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/j2.jpeg" alt="Photo by Rishi 2" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/j3.jpeg" alt="Photo by Rishi 3" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/j4.jpeg" alt="Photo by Rishi 4" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/j5.jpeg" alt="Photo by Rishi 5" onclick="openLightbox(this.src)" />
+      <img src="/Users/akkaloorisaikeerthana/Documents/j6.jpeg" alt="Photo by Rishi 6" onclick="openLightbox(this.src)" />
+    </div>
+  </section>
+
+  <footer>
+    <p>This website belongs to Rishi Kartheek Reddy — our smart and mischievous friend! Made with ❤️ by chinni</p>
+  </footer>
+
+  <div id="lightboxModal" class="lightbox-modal">
+    <button class="close-btn" onclick="closeLightbox()" aria-label="Close">&times;</button>
+    <img id="lightboxImage" src="" alt="Full View" />
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const typingText = document.getElementById('typingText');
+      const subText = document.getElementById('subText');
+      setTimeout(() => {
+        typingText.style.borderRight = 'none';
+        subText.classList.add('visible');
+      }, 3000);
+    });
+
+    function openLightbox(imageSrc) {
+      document.getElementById('lightboxImage').src = imageSrc;
+      document.getElementById('lightboxModal').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightboxModal').style.display = 'none';
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    window.onload = () => {
+      if (location.hash !== '#home') {
+        location.hash = '#home';
+      }
+    };
+  </script>
+</body>
+</html>
