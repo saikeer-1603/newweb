@@ -309,6 +309,86 @@
       opacity: 0 !important;
       transition: opacity 0.7s ease;
     }
+    #dailyGoals {
+  background: linear-gradient(135deg, #fefcea, #f1daff);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  max-width: 800px;
+  margin: 3rem auto;
+  box-shadow: 0 10px 25px rgba(142, 68, 173, 0.3);
+  text-align: center;
+}
+
+.todo-container {
+  margin-top: 2rem;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+  /* Inside your existing <style> tag, just complete the missing part */
+  .todo-list li {
+    background: #ffffff;
+    margin: 0.5rem auto;
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 600px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s;
+  }
+
+  .todo-list li.completed {
+    text-decoration: line-through;
+    background-color: #dcedc8;
+    color: #666;
+  }
+
+  .add-task {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .add-task input {
+    padding: 0.6rem;
+    width: 60%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+
+  .add-task button {
+    background-color: #8e44ad;
+    color: white;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .add-task button:hover {
+    background-color: #732d91;
+  }
+
+  .praise-box {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    color: #4caf50;
+    font-weight: bold;
+    min-height: 30px;
+  }
+
+
+
   </style>
 </head>
 <body>
@@ -388,6 +468,24 @@
     <div class="quote" id="quote">"Believe you can and you're halfway there." — Theodore Roosevelt</div>
     <button onclick="showRandomQuote()">Need a Boost?</button>
   </section>
+  <section id="dailyGoals">
+  <h2 id="greetingText">Hello, Rishi!</h2>
+  <p style="text-align:center; font-size:1.2rem; margin-bottom:1rem;">Here's your path to a productive, happy day ✨</p>
+
+  <div class="todo-container">
+    <ul id="todo-list" class="todo-list">
+      <!-- Default tasks -->
+    </ul>
+
+    <div class="add-task">
+      <input type="text" id="taskInput" placeholder="Add your own goal..." />
+      <button onclick="addCustomTask()">Add</button>
+    </div>
+  </div>
+
+  <div class="praise-box" id="praiseBox"></div>
+</section>
+
 
   <footer>
     <p>This website belongs to Rishi Kartheek Reddy — our smart and mischievous friend! Made with ❤️ by chinni</p>
@@ -423,12 +521,10 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
-    window.onload = () => {
-      if (location.hash !== '#home') {
-        location.hash = '#home';
-      }
-    };
-
+   window.onload = () => {
+  if (location.hash !== '#home') location.hash = '#home';
+  loadTasksFromLocalStorage();
+};
     // Motivation quotes array
     const quotes = [
       '"Believe you can and you\'re halfway there." — Theodore Roosevelt',
@@ -446,7 +542,24 @@
     // Cycle quotes every 8 seconds with fade effect
     let quoteIndex = 0;
     const quoteElem = document.getElementById('quote');
+   function saveTasksToLocalStorage() {
+  localStorage.setItem('rishiTasks', JSON.stringify([...todoList.children].map(li => ({
+    text: li.textContent,
+    completed: li.classList.contains('completed')
+  }))));
+}
 
+function loadTasksFromLocalStorage() {
+  const saved = JSON.parse(localStorage.getItem('rishiTasks') || '[]');
+  todoList.innerHTML = '';
+  saved.forEach(task => {
+    const li = document.createElement('li');
+    li.textContent = task.text;
+    if (task.completed) li.classList.add('completed');
+    li.onclick = () => toggleTask(li);
+    todoList.appendChild(li);
+  });
+}
     function startQuoteCycle() {
       setInterval(() => {
         fadeOutQuote(() => {
@@ -476,6 +589,68 @@
         fadeInQuote();
       });
     }
+  
+  const tasks = [
+    "Drink 2L of water 💧",
+    "Study for 2 hours 📚",
+    "Call Amma ❤️",
+    "Take 10 minutes to relax 🌿",
+    "Take one beautiful photo 📸"
+  ];
+
+  const praiseMessages = [
+    "You're doing amazing, Rishi! ✨",
+    "Keep it up, doctor in the making! 👨‍⚕️",
+    "Proud of you, always! 💜",
+    "One step closer to your dreams! 🌟",
+    "Such a good boy 😌❤️"
+  ];
+
+  const todoList = document.getElementById('todo-list');
+  const praiseBox = document.getElementById('praiseBox');
+  const taskInput = document.getElementById('taskInput');
+
+  function renderTasks() {
+    todoList.innerHTML = '';
+    tasks.forEach((task, index) => {
+      const li = document.createElement('li');
+      li.textContent = task;
+      li.onclick = () => toggleTask(li);
+      todoList.appendChild(li);
+    });
+  }
+
+ function toggleTask(li) {
+  li.classList.toggle('completed');
+  saveTasksToLocalStorage();
+  if (li.classList.contains('completed')) {
+    showPraise();
+  }
+}
+
+  function showPraise() {
+    const praise = praiseMessages[Math.floor(Math.random() * praiseMessages.length)];
+    praiseBox.textContent = praise;
+  }
+
+function addCustomTask() {
+  const newTask = taskInput.value.trim();
+  if (newTask) {
+    const li = document.createElement('li');
+    li.textContent = newTask;
+    li.onclick = () => toggleTask(li);
+    todoList.appendChild(li);
+    taskInput.value = '';
+    saveTasksToLocalStorage();
+  }
+}
+
+  // On page load, render default tasks
+  renderTasks();
+
+
   </script>
 </body>
 </html>
+
+
