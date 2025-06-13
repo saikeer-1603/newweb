@@ -253,6 +253,62 @@
         transform: translateY(0);
       }
     }
+
+    /* --- Motivation Section --- */
+    #motivation {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 4rem 2rem;
+      max-width: 800px;
+      margin: 4rem auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(118, 75, 162, 0.6);
+      text-align: center;
+      font-size: 1.2rem;
+      position: relative;
+      user-select: none;
+    }
+
+    #motivation h2 {
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #ffeb3b, #fff176);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    #motivation .quote {
+      font-style: italic;
+      font-size: 1.5rem;
+      min-height: 80px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      transition: opacity 0.5s ease;
+    }
+
+    #motivation button {
+      background: #ffeb3b;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: 30px;
+      font-weight: bold;
+      color: #4a148c;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 235, 59, 0.6);
+      transition: background 0.3s;
+    }
+
+    #motivation button:hover {
+      background: #fff176;
+      box-shadow: 0 6px 14px rgba(255, 241, 118, 0.9);
+    }
+
+    /* Smooth fade in for quotes */
+    .fade-out {
+      opacity: 0 !important;
+      transition: opacity 0.7s ease;
+    }
   </style>
 </head>
 <body>
@@ -264,6 +320,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#photos">Photos</a></li>
       <li><a href="#photography">Photography</a></li>
+      <li><a href="#motivation">Motivation</a></li>
     </ul>
   </nav>
 
@@ -325,6 +382,13 @@
     </div>
   </section>
 
+  <!-- Motivation Section -->
+  <section id="motivation">
+    <h2>Motivation to Keep You Going</h2>
+    <div class="quote" id="quote">"Believe you can and you're halfway there." — Theodore Roosevelt</div>
+    <button onclick="showRandomQuote()">Need a Boost?</button>
+  </section>
+
   <footer>
     <p>This website belongs to Rishi Kartheek Reddy — our smart and mischievous friend! Made with ❤️ by chinni</p>
   </footer>
@@ -342,6 +406,8 @@
         typingText.style.borderRight = 'none';
         subText.classList.add('visible');
       }, 3000);
+
+      startQuoteCycle();
     });
 
     function openLightbox(imageSrc) {
@@ -362,6 +428,54 @@
         location.hash = '#home';
       }
     };
+
+    // Motivation quotes array
+    const quotes = [
+      '"Believe you can and you\'re halfway there." — Theodore Roosevelt',
+      '"The only way to do great work is to love what you do." — Steve Jobs',
+      '"Keep your face always toward the sunshine—and shadows will fall behind you." — Walt Whitman',
+      '"You are never too old to set another goal or to dream a new dream." — C.S. Lewis',
+      '"It does not matter how slowly you go as long as you do not stop." — Confucius',
+      '"The harder the battle, the sweeter the victory." — Les Brown',
+      '"Start where you are. Use what you have. Do what you can." — Arthur Ashe',
+      '"Mistakes are proof that you are trying."',
+      '"Success is not final, failure is not fatal: It is the courage to continue that counts." — Winston Churchill',
+      '"Don’t watch the clock; do what it does. Keep going." — Sam Levenson'
+    ];
+
+    // Cycle quotes every 8 seconds with fade effect
+    let quoteIndex = 0;
+    const quoteElem = document.getElementById('quote');
+
+    function startQuoteCycle() {
+      setInterval(() => {
+        fadeOutQuote(() => {
+          quoteIndex = (quoteIndex + 1) % quotes.length;
+          quoteElem.textContent = quotes[quoteIndex];
+          fadeInQuote();
+        });
+      }, 8000);
+    }
+
+    function fadeOutQuote(callback) {
+      quoteElem.classList.add('fade-out');
+      setTimeout(() => {
+        callback();
+      }, 700);
+    }
+
+    function fadeInQuote() {
+      quoteElem.classList.remove('fade-out');
+    }
+
+    // Button to show a random quote immediately
+    function showRandomQuote() {
+      fadeOutQuote(() => {
+        quoteIndex = Math.floor(Math.random() * quotes.length);
+        quoteElem.textContent = quotes[quoteIndex];
+        fadeInQuote();
+      });
+    }
   </script>
 </body>
 </html>
